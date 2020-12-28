@@ -35,6 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         httpSecurity.formLogin()
-                .defaultSuccessUrl("/emotions", true);
+                .defaultSuccessUrl("/home", true);
     }
 }
