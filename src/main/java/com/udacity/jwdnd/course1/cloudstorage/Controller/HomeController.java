@@ -30,6 +30,8 @@ public class HomeController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
+        model.addAttribute("note", new Note());
+        model.addAttribute("notes", noteService.getAllNotes());
         return "home";
     }
 
@@ -53,5 +55,11 @@ public class HomeController {
 
         return "home";
 
+    }
+
+    @PostMapping("/logout")
+    public String logout(Model model) {
+        // TODO: find out why it works
+        return "login";
     }
 }
