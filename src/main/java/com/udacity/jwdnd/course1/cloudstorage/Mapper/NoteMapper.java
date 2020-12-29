@@ -5,6 +5,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.Mapper;
 
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -24,4 +25,7 @@ public interface NoteMapper {
 
     @Update("UPDATE NOTES SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription}, userId = #{userId} WHERE noteId = #{noteId}")
     int updateNote(Note note);
+
+    @Delete("DELETE FROM NOTES WHERE noteId = #{noteId}")
+    int deleteNote(Integer noteId);
 }

@@ -28,4 +28,6 @@ public class NoteService {
     }
 
     public void updateNote(Note note) { noteMapper.updateNote(note); }
+
+    public void deleteNote(Integer id) { noteMapper.deleteNote(id); }
 }

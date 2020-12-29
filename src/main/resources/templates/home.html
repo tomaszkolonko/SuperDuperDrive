@@ -72,6 +72,7 @@
                 </div>
             </div>
 
+
             <!--------------->
             <!-- NOTES TAB -->
             <!--------------->
@@ -99,7 +100,7 @@
                                         onclick="showNoteModal(this.getAttribute('noteId'), this.getAttribute('noteTitle'), this.getAttribute('noteDescription'))">
                                     Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <a th:href="@{/deleteNote(id=${note.noteId})}" class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row" th:text="${note.getNoteTitle()}">Example Note Title</th>
                             <td th:text="${note.getNoteDescription()}">Example Note Description</td>
