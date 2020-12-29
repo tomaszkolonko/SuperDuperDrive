@@ -26,4 +26,6 @@ public class NoteService {
     public List<Note> getAllNotes() {
         return noteMapper.getAllNotes();
     }
+
+    public void updateNote(Note note) { noteMapper.updateNote(note); }
 }
