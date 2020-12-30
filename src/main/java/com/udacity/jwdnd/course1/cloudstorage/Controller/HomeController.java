@@ -18,11 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class HomeController {
 
     private NoteService noteService;
-    private UserService userService;
 
     public HomeController(NoteService noteService, UserService userService) {
         this.noteService = noteService;
-        this.userService = userService;
     }
 
     @GetMapping("/home")
@@ -34,7 +32,6 @@ public class HomeController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Model model) {
-//        InputStream fis = fileUpload.getInputStream();
         return "home";
     }
 
