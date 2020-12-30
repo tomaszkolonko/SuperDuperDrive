@@ -4,6 +4,7 @@
 
 package com.udacity.jwdnd.course1.cloudstorage.Controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.Model.Credentials;
 import com.udacity.jwdnd.course1.cloudstorage.Model.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.Model.User;
@@ -44,6 +45,7 @@ public class HomeController {
         User user = userService.getUser(userName);
 
         model.addAttribute("note", new Note());
+        model.addAttribute("credentials", new Credentials());
         model.addAttribute("notes", noteService.getAllNotes());
         model.addAttribute("files", fileService.getFilesByUserId(user.getUserId()));
         return "home";
