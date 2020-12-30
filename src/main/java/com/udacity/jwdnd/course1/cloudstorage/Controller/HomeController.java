@@ -10,6 +10,10 @@ import com.udacity.jwdnd.course1.cloudstorage.Model.User;
 import com.udacity.jwdnd.course1.cloudstorage.Services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.Services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.Services.UserService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +57,15 @@ public class HomeController {
             return "result";
         }
 
-        File file = new File();
+        User user = userService.getUser(authentication.getName());
+        File file = fileService.getFileByFileName(fileUpload.getOriginalFilename(), user.getUserId());
+        if(file != null) {
+            model.addAttribute("success", false);
+            model.addAttribute("message", "Sorry, filename already exists in DB. Try another name.");
+            return "result";
+        }
+
+        file = new File();
         try {
             file.setFileId(null);
             file.setFileName(fileUpload.getOriginalFilename());
@@ -77,6 +89,14 @@ public class HomeController {
         model.addAttribute("success", true);
         model.addAttribute("message", "Your file has been successfully deleted.");
         return "result";
+    }
+
+    @GetMapping("/downloadFile")
+    public ResponseEntity<ByteArrayResource> downloadFile(@RequestParam Integer id, Authentication authentication, Model model) {
+        File file = fileService.getFileByFileId(id);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                .body(new ByteArrayResource(file.getFileData()));
     }
 
     @PostMapping("/logout")
