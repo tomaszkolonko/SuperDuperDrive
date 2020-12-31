@@ -182,7 +182,7 @@
                         <tr th:each="credentials : ${allCredentials}">
                             <td>
                                 <button type="button" class="btn btn-success"
-                                th:attr="credentialId=${credentials.credentialId}, userId=${credentials.userId}, key=${credentials.key}, url=${credentials.url}, userName=${credentials.userName}, password=${credentials.password}, encryptionService=${@encryptionService}"
+                                th:attr="credentialId=${credentials.credentialId}, userId=${credentials.userId}, key=${credentials.key}, url=${credentials.url}, userName=${credentials.userName}, password=${encryptionService.decryptValue(credentials.password, credentials.key)}"
                                 onclick="showCredentialModal(this.getAttribute('credentialId'), this.getAttribute('userId'), this.getAttribute('key'), this.getAttribute('url'), this.getAttribute('userName'), this.getAttribute('password'), this.getAttribute('encryptionService'))">Edit</button>
                                 <a th:href="@{/deleteCredentials(id=${credentials.credentialId})}" class="btn btn-danger">Delete</a>
                             </td>
@@ -257,13 +257,13 @@
     }
 
     // For opening the credentials modal
-    function showCredentialModal(credentialId, userId, key, url, username, password, encryptionService) {
+    function showCredentialModal(credentialId, userId, key, url, username, password) {
         $('#credential-id').val(credentialId ? credentialId : '');
         $('#user-id').val(userId ? userId : '');
         $('#key').val(key ? key : '');
         $('#credential-url').val(url ? url : '');
         $('#credential-username').val(username ? username : '');
-        $('#credential-password').val(password ? encryptionService.decryptValue(password, key) : '');
+        $('#credential-password').val(password ? password : '');
         $('#credentialModal').modal('show');
     }
 </script>
