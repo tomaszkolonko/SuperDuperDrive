@@ -1,4 +1,8 @@
-package com.udacity.jwdnd.course1.cloudstorage;
+/*
+ * Copyright (C) Schweizerische Bundesbahnen SBB, 2020.
+ */
+
+package com.udacity.jwdnd.course1.cloudstorage.pages;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;

@@ -27,6 +27,8 @@ public class NoteService {
         return noteMapper.getAllNotes();
     }
 
+    public Note getNoteById(Integer id) { return noteMapper.getNoteById(id); }
+
     public void updateNote(Note note) { noteMapper.updateNote(note); }
 
     public void deleteNote(Integer id) { noteMapper.deleteNote(id); }

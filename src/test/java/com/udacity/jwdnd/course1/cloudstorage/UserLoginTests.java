@@ -1,5 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.Services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.NoteHomePage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -25,12 +30,15 @@ public class UserLoginTests {
     private static WebDriverWait webDriverWait;
     private LoginPage loginPage;
     private SignupPage signupPage;
+    private NoteHomePage noteHomePage;
+
+    @Autowired
+    private NoteService noteService;
 
     private final String username = "John";
     private final String password = "yolo";
     private final String firstName = "John";
     private final String lastName = "Doe";
-
 
     @BeforeAll
     public static void beforeAll() {
@@ -49,6 +57,7 @@ public class UserLoginTests {
         webDriver.get("localhost:" + port + "/login");
         loginPage = new LoginPage(webDriver);
         signupPage = new SignupPage(webDriver);
+        noteHomePage = new NoteHomePage(webDriver);
     }
 
     @Test
