@@ -8,6 +8,8 @@ import com.udacity.jwdnd.course1.cloudstorage.Model.Credentials;
 import com.udacity.jwdnd.course1.cloudstorage.Model.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.Model.User;
+import com.udacity.jwdnd.course1.cloudstorage.Services.CredentialsService;
+import com.udacity.jwdnd.course1.cloudstorage.Services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.Services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.Services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.Services.UserService;
@@ -32,11 +34,15 @@ public class HomeController {
     private NoteService noteService;
     private UserService userService;
     private FileService fileService;
+    private CredentialsService credentialsService;
+    private EncryptionService encryptionService;
 
-    public HomeController(NoteService noteService, UserService userService, FileService fileService) {
+    public HomeController(NoteService noteService, UserService userService, FileService fileService, CredentialsService credentialsService, EncryptionService encryptionService) {
         this.noteService = noteService;
         this.userService = userService;
         this.fileService = fileService;
+        this.credentialsService = credentialsService;
+        this.encryptionService = encryptionService;
     }
 
     @GetMapping("/home")
@@ -45,8 +51,13 @@ public class HomeController {
         User user = userService.getUser(userName);
 
         model.addAttribute("note", new Note());
-        model.addAttribute("credentials", new Credentials());
         model.addAttribute("notes", noteService.getAllNotes());
+
+        model.addAttribute("credentials", new Credentials());
+        model.addAttribute("allCredentials", credentialsService.getAllCredentialsByUserId(user.getUserId()));
+
+        model.addAttribute("encryptionService", encryptionService);
+
         model.addAttribute("files", fileService.getFilesByUserId(user.getUserId()));
         return "home";
     }

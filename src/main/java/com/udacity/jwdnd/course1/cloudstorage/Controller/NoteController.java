@@ -26,22 +26,6 @@ public class NoteController {
         this.userService = userService;
     }
 
-//    @PostMapping("/addNote")
-//    public String addNote(Authentication authentication, @ModelAttribute("note") Note note, Model model) {
-//
-//        // TODO: This is not really good because there might be two users with the same name
-//        String loggedInUserName = authentication.getName();
-//        User loggedIinUser = userService.getUser(loggedInUserName);
-//        Note newNote = new Note(null, note.getNoteTitle(), note.getNoteDescription(), loggedIinUser.getUserId());
-//
-//        noteService.addNoteToList(newNote);
-//
-//        model.addAttribute("notes", noteService.getAllNotes());
-//
-//        return "home";
-//
-//    }
-
     @PostMapping("/addNote")
     public String createOrUpdateNote(@ModelAttribute("note") Note note, Authentication authentication, Model model) {
         String username = authentication.getName();
