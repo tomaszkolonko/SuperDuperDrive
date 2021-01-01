@@ -77,4 +77,12 @@ public class CredentialsPage {
     public void clickTheContinueButtonOnResultPageOnSuccess() {
         ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", theContinueButtonOnSuccess);
     }
+
+    public void clickOnAddNewCredentialsButton() {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", addNewCredentialsButton);
+    }
+
+    public void clickOnDeleteCredentialsButton() {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", deleteCredentialsButton);
+    }
 }

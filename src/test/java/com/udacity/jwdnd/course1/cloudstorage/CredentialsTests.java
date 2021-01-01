@@ -15,7 +15,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +91,42 @@ public class CredentialsTests {
         assert(johnsCredentialsList.get(0).getUrl().equals(newURL));
         assert(johnsCredentialsList.get(0).getUserName().equals(newName));
 
+        webDriver.get("localhost:" + port + "/logout");
+
 
     }
 
     @Test
-    public void testDeletingCredentials() {
+    public void testAddingAndDeletingNewCredentials() {
+        List<Credentials> johnsCredentialsList = credentialsService.getAllCredentialsByUserId(userId);
+        assert(johnsCredentialsList.size() == 1);
 
-    }
+        loginPage.enterCredentials(username, password);
+        loginPage.submit();
 
-    @Test
-    public void testAddingNewCredentials() {
+        credentialsPage.makeSureRightCredentialsTabIsActive();
+
+        WebElement deleteButton = webDriverWait.until(webDriver1 -> webDriver1.findElement(By.id("addNewCredentialsButton")));
+        credentialsPage.clickOnDeleteCredentialsButton();
+        credentialsPage.clickTheContinueButtonOnResultPageOnSuccess();
+
+        johnsCredentialsList.clear();
+        johnsCredentialsList = credentialsService.getAllCredentialsByUserId(userId);
+        assert(johnsCredentialsList.isEmpty());
+
+        credentialsPage.clickOnAddNewCredentialsButton();
+
+        credentialsPage.changeModalCredentialsURL("www.google.ch");
+        credentialsPage.changeModalCredentialsUsernmae("John");
+        credentialsPage.changeModalCredentialsPassword("test1234");
+
+        credentialsPage.saveModalChangesButton();
+        credentialsPage.clickTheContinueButtonOnResultPageOnSuccess();
+
+        credentialsPage.makeSureRightCredentialsTabIsActive();
+
+        johnsCredentialsList = credentialsService.getAllCredentialsByUserId(userId);
+        assert(johnsCredentialsList.size() == 1);
 
     }
 }
