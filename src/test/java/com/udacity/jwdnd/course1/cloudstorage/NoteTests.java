@@ -58,6 +58,9 @@ public class NoteTests {
         loginPage = new LoginPage(webDriver);
         noteHomePage = new NoteHomePage(webDriver);
         resultPage = new ResultPage(webDriver);
+
+        // Prepare Database
+
     }
 
     @Test
@@ -89,15 +92,12 @@ public class NoteTests {
         resultPage.clickTheContinueButtonOnResultPageOnSuccess();
         noteHomePage.makeSureYouAreOnNoteTab();
 
-        // Delete all notes
-        for(int index = noteService.getAllNotes().size(); index >= 0; index--) {
-            noteHomePage.clickOnDeleteNoteButton();
-            resultPage.clickTheContinueButtonOnResultPageOnSuccess();
-            noteHomePage.makeSureYouAreOnNoteTab();
-        }
+        noteService.deleteNote(3);
 
         listOfNotes = noteService.getAllNotes();
-        assert(listOfNotes.size() == 0);
+        assert(listOfNotes.size() == 2);
+
+        webDriver.get("localhost:" + port + "/logout");
     }
 
     @Test void testEditingANote() {
@@ -118,6 +118,8 @@ public class NoteTests {
 
         specificNote = noteService.getNoteById(1);
         assertEquals(specificNote.getNoteTitle(), "TestNoteExtended");
+
+        webDriver.get("localhost:" + port + "/logout");
 
     }
 }

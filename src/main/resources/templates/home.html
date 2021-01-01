@@ -28,7 +28,7 @@
                    role="tab" aria-controls="nav-files" aria-selected="true">Files</a>
                 <a class="nav-item nav-link" id="navNotesTab" data-toggle="tab" href="#nav-notes" role="tab"
                    aria-controls="nav-notes" aria-selected="false">Notes</a>
-                <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab"
+                <a class="nav-item nav-link" id="navCredentialsTab" data-toggle="tab"
                    href="#nav-credentials" role="tab" aria-controls="nav-credentials" aria-selected="false">Credentials</a>
             </div>
         </nav>
@@ -162,8 +162,8 @@
 
 
             <div class="tab-pane fade" id="nav-credentials" role="tabpanel"
-                 aria-labelledby="nav-credentials-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
+                 aria-labelledby="navCredentialsTab">
+                <button id="addNewCredentialsButton" style="margin: 0.25em;" type="button" class="btn btn-info float-right"
                         onclick="showCredentialModal()">
                     + Add a New Credential
                 </button>
@@ -179,16 +179,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="credentials : ${allCredentials}">
+                        <tr th:each="credentialsRow : ${allCredentials}">
                             <td>
                                 <button type="button" class="btn btn-success"
-                                th:attr="credentialId=${credentials.credentialId}, userId=${credentials.userId}, key=${credentials.key}, url=${credentials.url}, userName=${credentials.userName}, password=${encryptionService.decryptValue(credentials.password, credentials.key)}"
+                                th:attr="credentialId=${credentialsRow.credentialId}, userId=${credentialsRow.userId}, key=${credentialsRow.key}, url=${credentialsRow.url}, userName=${credentialsRow.userName}, password=${encryptionService.decryptValue(credentialsRow.password, credentialsRow.key)}"
                                 onclick="showCredentialModal(this.getAttribute('credentialId'), this.getAttribute('userId'), this.getAttribute('key'), this.getAttribute('url'), this.getAttribute('userName'), this.getAttribute('password'), this.getAttribute('encryptionService'))">Edit</button>
-                                <a th:href="@{/deleteCredentials(id=${credentials.credentialId})}" class="btn btn-danger">Delete</a>
+                                <a th:href="@{/deleteCredentials(id=${credentialsRow.credentialId})}" class="btn btn-danger">Delete</a>
                             </td>
-                            <th th:text="${credentials.getUrl()}" scope="row">Example Credential URL</th>
-                            <td th:text="${credentials.getUserName()}">Example Credential Username</td>
-                            <td th:text="${credentials.getPassword()}">Example Credential Password</td>
+                            <th th:text="${credentialsRow.getUrl()}" scope="row">Example Credential URL</th>
+                            <td th:text="${credentialsRow.getUserName()}">Example Credential Username</td>
+                            <td th:text="${credentialsRow.getPassword()}">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>
