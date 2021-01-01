@@ -41,6 +41,10 @@ public class CredentialsController {
 
         if (credentials.getCredentialId() != null) {
             // TODO: instead of putting every piece of info into the modals, just qurry them here
+
+            String encryptedPassword = encryptionService.encryptValue(credentials.getPassword(), credentials.getKey());
+            credentials.setPassword(encryptedPassword);
+
             credentialsService.updateCredentials(credentials);
             model.addAttribute("success", true);
             model.addAttribute("message", "Credentials successfully updated.");

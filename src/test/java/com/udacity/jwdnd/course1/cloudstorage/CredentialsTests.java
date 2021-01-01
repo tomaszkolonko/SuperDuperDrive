@@ -6,6 +6,8 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import com.udacity.jwdnd.course1.cloudstorage.Model.Credentials;
 import com.udacity.jwdnd.course1.cloudstorage.Services.CredentialsService;
+import com.udacity.jwdnd.course1.cloudstorage.Services.EncryptionService;
+import com.udacity.jwdnd.course1.cloudstorage.Services.UserService;
 import com.udacity.jwdnd.course1.cloudstorage.pages.CredentialsPage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.NoteHomePage;
@@ -26,6 +28,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CredentialsTests {
     @LocalServerPort
@@ -40,6 +44,12 @@ public class CredentialsTests {
 
     @Autowired
     private CredentialsService credentialsService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EncryptionService encryptionService;
 
     private final String username = "John";
     private final String password = "yolo";
@@ -98,6 +108,11 @@ public class CredentialsTests {
 
     @Test
     public void testAddingAndDeletingNewCredentials() {
+        String newUrl = "www.google.ch";
+        String newUsername = "John";
+        String newPassword = "test1234";
+
+
         List<Credentials> johnsCredentialsList = credentialsService.getAllCredentialsByUserId(userId);
         assert(johnsCredentialsList.size() == 1);
 
@@ -106,6 +121,7 @@ public class CredentialsTests {
 
         credentialsPage.makeSureRightCredentialsTabIsActive();
 
+        // Delete a credentials entry
         WebElement deleteButton = webDriverWait.until(webDriver1 -> webDriver1.findElement(By.id("addNewCredentialsButton")));
         credentialsPage.clickOnDeleteCredentialsButton();
         credentialsPage.clickTheContinueButtonOnResultPageOnSuccess();
@@ -116,9 +132,10 @@ public class CredentialsTests {
 
         credentialsPage.clickOnAddNewCredentialsButton();
 
-        credentialsPage.changeModalCredentialsURL("www.google.ch");
-        credentialsPage.changeModalCredentialsUsernmae("John");
-        credentialsPage.changeModalCredentialsPassword("test1234");
+        // Create new credentials entry
+        credentialsPage.changeModalCredentialsURL(newUrl);
+        credentialsPage.changeModalCredentialsUsernmae(newUsername);
+        credentialsPage.changeModalCredentialsPassword(newPassword);
 
         credentialsPage.saveModalChangesButton();
         credentialsPage.clickTheContinueButtonOnResultPageOnSuccess();
@@ -128,5 +145,18 @@ public class CredentialsTests {
         johnsCredentialsList = credentialsService.getAllCredentialsByUserId(userId);
         assert(johnsCredentialsList.size() == 1);
 
+        // Check the Password in the Modal
+        credentialsPage.clickOnCredentialsEditButton();
+        String passwordClearText = credentialsPage.getModalPasswordValue();
+        assertEquals(passwordClearText, newPassword);
+
+        Credentials credentials = johnsCredentialsList.get(0);
+
+        String passwordEncrpytedFromDB = credentials.getPassword();
+        String keyFromDB = credentials.getKey();
+
+        // Decipher password with key and compare to cleartext
+        String passwordDeciphered = encryptionService.decryptValue(passwordEncrpytedFromDB, keyFromDB);
+        assertEquals(passwordDeciphered, passwordClearText);
     }
 }

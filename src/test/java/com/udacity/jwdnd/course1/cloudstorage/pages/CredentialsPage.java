@@ -4,6 +4,7 @@
 
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,10 +13,10 @@ import org.openqa.selenium.support.PageFactory;
 
 public class CredentialsPage {
 
-    @FindBy(className = "btn-success")
+    @FindBy(xpath = "//*[@id=\"credentialTable\"]/tbody/tr/td[1]/button")
     private WebElement editCredentialsButton;
 
-    @FindBy(className = "btn-danger")
+    @FindBy(xpath = "//*[@id=\"credentialTable\"]/tbody/tr/td[1]/a")
     private WebElement deleteCredentialsButton;
 
     @FindBy(id = "navCredentialsTab")
@@ -33,7 +34,7 @@ public class CredentialsPage {
     @FindBy(id = "credential-password")
     private WebElement modalCredentialsPassword;
 
-    @FindBy(className = "btn-primary")
+    @FindBy(xpath = "//*[@id=\"credentialModal\"]/div/div/div[3]/button[2]")
     private WebElement modalSaveChangesButton;
 
     @FindBy(id = "theContinueButtonOnSuccess")
@@ -66,8 +67,8 @@ public class CredentialsPage {
     }
 
     public void changeModalCredentialsPassword(String pwd) {
-        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", theContinueButtonOnSuccess);
-        ((JavascriptExecutor) webDriver).executeScript("arguments[0].value='" + pwd + "';",theContinueButtonOnSuccess);
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", modalCredentialsPassword);
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].value='" + pwd + "';",modalCredentialsPassword);
     }
 
     public void saveModalChangesButton() {
@@ -84,5 +85,9 @@ public class CredentialsPage {
 
     public void clickOnDeleteCredentialsButton() {
         ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", deleteCredentialsButton);
+    }
+
+    public String getModalPasswordValue() {
+        return webDriver.findElement(By.id("credential-password")).getAttribute("value");
     }
 }
