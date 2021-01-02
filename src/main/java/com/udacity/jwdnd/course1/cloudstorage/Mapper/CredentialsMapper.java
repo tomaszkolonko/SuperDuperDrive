@@ -11,10 +11,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface CredentialsMapper {
     @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId}")
     List<Credentials> getAllCredentialsByUserId(Integer userId);
@@ -32,3 +34,4 @@ public interface CredentialsMapper {
     @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId}")
     int deleteCredentials(Integer credentialId);
 }
+
